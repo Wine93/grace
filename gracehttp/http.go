@@ -13,6 +13,7 @@ import (
 	"os/signal"
 	"sync"
 	"syscall"
+	"time"
 
 	"github.com/facebookgo/grace/gracenet"
 	"github.com/facebookgo/httpdown"
@@ -199,6 +200,18 @@ func Serve(servers ...*http.Server) error {
 func PreStartProcess(hook func() error) option {
 	return func(a *app) {
 		a.preStartProcess = hook
+	}
+}
+
+func StopTimeout(timeout time.Duration) option {
+	return func(a *app) {
+		a.http.StopTimeout = timeout
+	}
+}
+
+func KillTimeout(timeout time.Duration) option {
+	return func(a *app) {
+		a.http.KillTimeout = timeout
 	}
 }
 
